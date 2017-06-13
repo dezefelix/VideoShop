@@ -54,8 +54,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
-            style="@style/default_edittext_style"
-            />
+            style="@style/default_edittext_style" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -85,7 +84,6 @@
                 android:layout_marginStart="@dimen/margin_half"
                 style="@style/default_button_text_style"
                 android:text="@string/register" />
-
         </LinearLayout>
 
         <LinearLayout
