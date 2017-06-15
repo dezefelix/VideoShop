@@ -1,4 +1,4 @@
-package com.felixboons.videoshop;
+package com.felixboons.videoshop.Domain;
 
 import java.io.Serializable;
 
