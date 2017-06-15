@@ -5,11 +5,11 @@ package com.felixboons.videoshop;
  */
 
 public class Film {
-    private int filmId, releaseYear;
-    private String title, description, rentalDuration, price, length,
-            replacementCost, rating, specialFeatures;
+    private int filmId, releaseYear, rentalDuration, length;
+    private String title, description, rating, specialFeatures;
+    private double price, replacementCost;
 
-    public Film(int filmId, int releaseYear, String title, String description, String rentalDuration, String price, String length, String replacementCost, String rating, String specialFeatures) {
+    public Film(int filmId, int releaseYear, String title, String description, int rentalDuration, double price, int length, double replacementCost, String rating, String specialFeatures) {
         this.filmId = filmId;
         this.releaseYear = releaseYear;
         this.title = title;
@@ -54,35 +54,35 @@ public class Film {
         this.description = description;
     }
 
-    public String getRentalDuration() {
+    public int getRentalDuration() {
         return rentalDuration;
     }
 
-    public void setRentalDuration(String rentalDuration) {
+    public void setRentalDuration(int rentalDuration) {
         this.rentalDuration = rentalDuration;
     }
 
-    public String getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
-    public String getLength() {
+    public int getLength() {
         return length;
     }
 
-    public void setLength(String length) {
+    public void setLength(int length) {
         this.length = length;
     }
 
-    public String getReplacementCost() {
+    public double getReplacementCost() {
         return replacementCost;
     }
 
-    public void setReplacementCost(String replacementCost) {
+    public void setReplacementCost(double replacementCost) {
         this.replacementCost = replacementCost;
     }
 
