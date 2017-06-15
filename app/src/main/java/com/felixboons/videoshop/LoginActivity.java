@@ -23,6 +23,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         passwordInput = (EditText) findViewById(R.id.password_edittext);
         loginBtn = (Button) findViewById(R.id.login_button);
         registerBtn = (Button) findViewById(R.id.register_button);
+
+        //set listeners
+        loginBtn.setOnClickListener(this);
+        registerBtn.setOnClickListener(this);
     }
 
     @Override
