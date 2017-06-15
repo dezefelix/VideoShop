@@ -1,15 +1,17 @@
 package com.felixboons.videoshop;
 
+import java.io.Serializable;
+
 /**
  * Created by Felix on 15-6-2017.
  */
 
-public class Film {
+public class Film implements Serializable {
     private int filmId, releaseYear, rentalDuration, length;
     private String title, description, rating, specialFeatures;
     private double price, replacementCost;
 
-    public Film(int filmId, int releaseYear, String title, String description, int rentalDuration, double price, int length, double replacementCost, String rating, String specialFeatures) {
+    public Film(int filmId, String title, String description, int releaseYear, int rentalDuration, double price, int length, double replacementCost, String rating, String specialFeatures) {
         this.filmId = filmId;
         this.releaseYear = releaseYear;
         this.title = title;
