@@ -1,8 +1,10 @@
 package com.felixboons.videoshop;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -22,7 +24,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 
-public class FilmOverviewActivity extends AppCompatActivity implements ListView.OnItemClickListener, Response.ErrorListener, Response.Listener<JSONObject> {
+public class FilmOverviewActivity extends AppCompatActivity implements ListView.OnItemClickListener,
+        Response.ErrorListener, Response.Listener<JSONObject> {
 
     private FilmAdapter adapter;
     private ArrayList<Film> films = new ArrayList<>();
@@ -37,14 +40,15 @@ public class FilmOverviewActivity extends AppCompatActivity implements ListView.
         setContentView(R.layout.activity_film_overview);
 
         //initialise views
-        ListView filmOverview = (ListView) findViewById(R.id.listview);
+        ListView filmListview = (ListView) findViewById(R.id.listview);
 
 
-        ArrayList<Film> films = new ArrayList<>();
+        films = new ArrayList<>();
         //testdata----
+        films.add(new Film(0, "Deze fielmpje", "Deze goeie fielmpje was erg leuk. Ik zou hem zo nog een keer niet kijken. Dat wilde ik even mededelen.", 2007, 4, 0.99, 107, 21.99, "PG", null));
         films.add(new Film(0, "Deze fielmpje", "Deze goeie fielmpje was erg leuk. Ik zou hem zo nog een keer niet kijken. Dat wilde ik even mededelen.", 2007, 4, 0.99, 107, 21.99, "PG", "No special features."));
         films.add(new Film(0, "Deze andere gekke fielmpje", "Deze goeie fielmpje was erg leuk. Ik zou hem zo nog een keer niet kijken. Dat wilde ik even mededelen. Deze description moet even wat langer zijn. Op deze manier kan ik zien hoe dit er uit komt te zien in de applicatie. Goed, slecht? Eens even kijken...", 2007, 4, 0.99, 107, 21.99, "PG", "No special features."));
-        films.add(new Film(0, "Deine fielmpje met die extra lange titel jwz jwt", "Deze goeie fielmpje was erg leuk. Ik zou hem zo nog een keer niet kijken. Dat wilde ik even mededelen.", 2007, 4, 0.99, 107, 21.99, "PG", "No special features."));
+        films.add(new Film(0, "Deine fielmpje met die extra lange titel jwz jwt", "Deze goeie fielmpje was erg leuk. Ik zou hem zo nog een keer niet kijken. Dat wilde ik even mededelen.", 2007, 4, 0.99, 107, 21.99, "PG", "Behind the scenes.Extra footage"));
         //----
 
         //initialise queue
@@ -52,23 +56,27 @@ public class FilmOverviewActivity extends AppCompatActivity implements ListView.
 
         //initialise & set adapter
         adapter = new FilmAdapter(this, films);
-        filmOverview.setAdapter(adapter);
+        filmListview.setAdapter(adapter);
+
+        //set listener
+        filmListview.setOnItemClickListener(this);
 
         showProgressDialog();
-        sendGetRequest();
+//        sendGetFilmRequest();
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Film film = films.get(position);
+        Log.i(this.getClass().getSimpleName(), "Film: " + film);
 
         //continue to detail screen
-//        Intent i = new Intent(this, FilmDetailActivity.class);
-//        i.putExtra("film", film);
-//        startActivity(i);
+        Intent i = new Intent(this, FilmDetailActivity.class);
+        i.putExtra("film", film);
+        startActivity(i);
     }
 
-    public void sendGetRequest() {
+    public void sendGetFilmRequest() {
         String getFilmsURL = "";
         final JsonObjectRequest req = new JsonObjectRequest(
                 Request.Method.GET,
@@ -77,6 +85,7 @@ public class FilmOverviewActivity extends AppCompatActivity implements ListView.
                 this,
                 this
         );
+        queue.add(req);
     }
 
     @Override

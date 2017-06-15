@@ -4,38 +4,166 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="@dimen/default_margin"
     android:orientation="vertical"
     tools:context="com.felixboons.videoshop.FilmDetailActivity">
 
-    <TextView
-        android:layout_width="match_parent"
-        style="@style/default_header_text_style"
-        android:layout_height="wrap_content"
-        android:text="Crazy Dinosaurs Living On The Edge Of The Earth"/>
-    
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/default_margin"
+        android:orientation="vertical">
+
         <TextView
-            android:layout_width=""
-            android:layout_height="" />
-        
-    </LinearLayout>
-    
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        
-        <Button
+            android:id="@+id/film_title_textview"
+            style="@style/default_header_text_style"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/button"
-            android:text="Rent this film"
-            android:layout_alignParentBottom="true"/>
-        
-    </RelativeLayout>
+            android:text="Crazy Dinosaurs Living On The Edge Of The Earth"
+            android:textSize="40sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_half"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/film_rating_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="PG"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/information_divider"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/film_release_year_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2007"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/information_divider"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/film_length_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="107 min."
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/information_divider"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/film_price_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="$0.99"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/special_feature_linearlayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/default_margin"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/film_special_features_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:text="Include:"
+                android:textStyle="italic" />
+
+            <TextView
+                android:id="@+id/film_special_feature_item_textview1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:text="*Deleted Scenes"
+                android:textStyle="italic" />
+
+            <TextView
+                android:id="@+id/film_special_feature_item_textview2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:text="*Deleted Scenes"
+                android:textStyle="italic" />
+
+        </LinearLayout>
+
+        <ScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/film_descr_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="A Action-Packed Reflection of a Pastry Chef And a Composer who must Discover a Mad Scientist in The First Manned Space Station." />
+
+        </ScrollView>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/rent_film_button"
+                android:layout_marginBottom="@dimen/default_margin"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/film_rental_duration_textview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Max rental duration: 4 days"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/film_rental_cost_textview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Replacement cost: $20.99"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/rent_film_button"
+                style="@style/default_button_text_style"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/button"
+                android:text="Rent this film" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
 
 </LinearLayout>
