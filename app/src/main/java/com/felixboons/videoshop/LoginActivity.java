@@ -23,6 +23,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         passwordInput = (EditText) findViewById(R.id.password_edittext);
         loginBtn = (Button) findViewById(R.id.login_button);
         registerBtn = (Button) findViewById(R.id.register_button);
+
+        //set listeners
+        loginBtn.setOnClickListener(this);
+        registerBtn.setOnClickListener(this);
+        registerBtn.setOnClickListener(this);
     }
 
     @Override
@@ -30,8 +35,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         switch (v.getId()) {
             case R.id.login_button:
                 //check input fields & credentials
-                if (usernameInput.getText().toString().trim().equals("") ||
-                        passwordInput.getText().toString().trim().equals("")) {
+                if (!validateInput()) {
                     Toast.makeText(this, "One or more fields are empty.", Toast.LENGTH_SHORT).show();
                 } else {
 
@@ -51,6 +55,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Intent i = new Intent(this, RegisterActivity.class);
                 startActivity(i);
                 break;
+        }
+    }
+
+    public boolean validateInput() {
+        if (usernameInput.getText().toString().trim().equals("") ||
+                passwordInput.getText().toString().trim().equals("")) {
+            return false;
+        } else {
+            return true;
         }
     }
 }
