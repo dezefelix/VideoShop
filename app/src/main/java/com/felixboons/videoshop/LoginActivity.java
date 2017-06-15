@@ -113,7 +113,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void login() throws JSONException {
         showProgressDialog();
         sendPostRequest();
-
     }
 
     //show ProgressDialog while logging in
