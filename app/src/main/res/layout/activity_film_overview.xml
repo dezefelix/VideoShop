@@ -7,7 +7,8 @@
     tools:context="com.felixboons.videoshop.FilmOverviewActivity">
 
     <include
-        android:id="@id/toolbar"
-        layout="@layout/toolbar" />
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar">
+    </include>
 
 </LinearLayout>
