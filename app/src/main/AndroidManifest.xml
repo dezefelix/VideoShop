@@ -10,7 +10,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/VideoShop" >
+        android:theme="@style/VideoShop">
         <activity android:name=".LoginActivity">
 
         </activity>
@@ -22,7 +22,13 @@
             </intent-filter>
 
         </activity>
+<<<<<<< HEAD
         <activity android:name=".RegisterActivity"/>
+=======
+        <activity android:name=".HomescreenActivity" />
+        <activity android:name=".RegisterActivity" />
+        <activity android:name=".FilmOverviewActivity"></activity>
+>>>>>>> origin/master
     </application>
 
 </manifest>
