@@ -11,16 +11,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/VideoShop">
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".HomescreenActivity">
+        <activity android:name=".LoginActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".HomescreenActivity">
+        </activity>
         <activity android:name=".RegisterActivity" />
-        <activity android:name=".FilmOverviewActivity"></activity>
+        <activity android:name=".FilmOverviewActivity" />
         <activity android:name=".FilmDetailActivity" />
         <activity android:name=".ReturnFilmActivity"></activity>
     </application>

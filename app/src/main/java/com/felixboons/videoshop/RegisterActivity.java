@@ -1,5 +1,6 @@
 package com.felixboons.videoshop;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,14 +9,25 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.felixboons.videoshop.Volley.MyJSONObjectRequest;
+import com.felixboons.videoshop.Volley.MyVolleyRequestQueue;
 
-public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
+import org.json.JSONException;
+import org.json.JSONObject;
+
+public class RegisterActivity extends AppCompatActivity implements View.OnClickListener, Response.Listener<JSONObject>, Response.ErrorListener {
 
     private EditText firstnameInput, lastnameInput, emailInput,
             passwordInput, passwordConfirmInput;
 
+    private String email, password;
 
+    private RequestQueue queue;
+    private ProgressDialog pd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +45,37 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         //set listener
         registerBtn.setOnClickListener(this);
 
+        //initialise queue
+        queue = MyVolleyRequestQueue.getInstance(this.getApplicationContext()).getRequestQueue();
+    }
 
+    public void sendPostRequest() throws JSONException {
+        String getFilmsURL = "https://video-shop-server.herokuapp.com/api/v1/register";
+        final MyJSONObjectRequest req = new MyJSONObjectRequest(
+                Request.Method.POST,
+                getFilmsURL,
+                createBody(),
+                this,
+                this
+        );
+        queue.add(req);
+    }
+
+    public JSONObject createBody() throws JSONException {
+
+        //get input values
+        String firstname = firstnameInput.getText().toString().trim();
+        String lastname = lastnameInput.getText().toString().trim();
+        email = emailInput.getText().toString().trim();
+        password = passwordInput.getText().toString();
+
+        //create payload
+        JSONObject payload = new JSONObject();
+        payload.put("email", email);
+        payload.put("password", password);
+        payload.put("firstname", firstname);
+        payload.put("lastname", lastname);
+        return payload;
     }
 
     @Override
@@ -42,12 +84,12 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 passwordInput, passwordConfirmInput}) && validatePasswords()) {
 
             //post data to DB using Volley
-
-
-
-            //continue to LoginActivity
-            Intent i = new Intent(this, LoginActivity.class);
-            startActivity(i);
+            try {
+                showProgressDialog();
+                sendPostRequest();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -89,5 +131,27 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         } else {
             return true;
         }
+    }
+
+    @Override
+    public void onResponse(JSONObject response) {
+        pd.cancel();
+        Toast.makeText(this, "Account created.", Toast.LENGTH_SHORT).show();
+        Intent i = new Intent(this,LoginActivity.class);
+        i.putExtra("email", email);
+        i.putExtra("password", password);
+        startActivity(i);
+    }
+
+    @Override
+    public void onErrorResponse(VolleyError error) {
+        Toast.makeText(this, "Could not create account.", Toast.LENGTH_SHORT).show();
+    }
+
+    //show ProgressDialog while registering
+    public void showProgressDialog() {
+        pd = new ProgressDialog(this);
+        pd.setMessage("Logging in...");
+        pd.show();
     }
 }

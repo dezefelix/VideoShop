@@ -24,7 +24,7 @@ import org.json.JSONObject;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, Response.ErrorListener, Response.Listener<JSONObject> {
 
-    private EditText usernameInput, passwordInput;
+    private EditText emailInput, passwordInput;
     private RequestQueue queue;
     private ProgressDialog pd;
 
@@ -38,7 +38,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_login);
 
         //initialise views
-        usernameInput = (EditText) findViewById(R.id.username_edittext);
+        emailInput = (EditText) findViewById(R.id.email_edittext);
         passwordInput = (EditText) findViewById(R.id.password_edittext);
         Button loginBtn = (Button) findViewById(R.id.login_button);
         Button registerBtn = (Button) findViewById(R.id.register_button);
@@ -55,6 +55,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         //create SharedPreference
         tokenPref = getSharedPreferences(TOKENPREFERENCE, Context.MODE_PRIVATE);
         tokenPrefEditor = tokenPref.edit();
+
+        //load credentials
+        if (getIntent() != null) {
+            emailInput.setText(getIntent().getStringExtra("email"));
+            passwordInput.setText(getIntent().getStringExtra("password"));
+        }
     }
 
     @Override
@@ -87,7 +93,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     public boolean validateInput() {
-        if (usernameInput.getText().toString().trim().equals("") ||
+        if (emailInput.getText().toString().trim().equals("") ||
                 passwordInput.getText().toString().trim().equals("")) {
             Toast.makeText(this, "One or more fields are empty.", Toast.LENGTH_SHORT).show();
             return false;
@@ -96,10 +102,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
+    //create JSON body
     public JSONObject createBody() throws JSONException {
 
         //get input values
-        String username = usernameInput.getText().toString().trim();
+        String username = emailInput.getText().toString().trim();
         String password = passwordInput.getText().toString();
 
         //create payload
