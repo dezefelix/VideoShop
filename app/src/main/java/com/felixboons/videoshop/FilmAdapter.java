@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.felixboons.videoshop.Domain.Film;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * Created by Felix on 15-6-2017.
@@ -38,7 +39,7 @@ public class FilmAdapter extends ArrayAdapter<Film> {
 
         //add value to views
         titleOutput.setText(film.getTitle());
-        descriptionOutput.setText(film.getDescription());
+        descriptionOutput.setText(String.format(Locale.getDefault(), "%s.", film.getDescription()));
         ratingOutput.setText(film.getRating());
         lengthOutput.setText(film.getLength() + " min.");
         priceOutput.setText("$" + film.getPrice());

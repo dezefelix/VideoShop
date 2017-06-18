@@ -25,7 +25,6 @@ public class FilmDetailActivity extends AppCompatActivity {
 
         //get intent values
         film = (Film) getIntent().getSerializableExtra("film");
-        Log.i(this.getClass().getSimpleName(), "Film: " + film);
 
         fillViews();
     }
@@ -51,7 +50,7 @@ public class FilmDetailActivity extends AppCompatActivity {
         if (film.getSpecialFeatures() != null) {
             inflateFeatureView(specialFeaturesOutput);
         }
-        descriptionOutput.setText(film.getDescription());
+        descriptionOutput.setText(String.format(Locale.getDefault(), "%s.", film.getDescription()));
         rentalDurationOutput.setText(String.format(Locale.getDefault(), "Max rental duration: %d days", film.getRentalDuration()));
         replacementCostOutput.setText(String.format(Locale.getDefault(), "Replacement cost: $%.2f", film.getReplacementCost()));
     }
@@ -83,9 +82,8 @@ public class FilmDetailActivity extends AppCompatActivity {
                 default:
                     featureOuput = (TextView) findViewById(R.id.film_special_feature_item_textview1);
             }
-            featureOuput.setText(features[i]);
+            featureOuput.setText(String.format(Locale.getDefault(), "* %s", features[i]));
             featureOuput.setVisibility(View.VISIBLE);
-//            Log.i("FEATURES", features[i]);
         }
     }
 }
