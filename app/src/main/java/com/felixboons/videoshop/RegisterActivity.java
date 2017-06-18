@@ -8,10 +8,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private EditText usernameInput, firstnameInput, lastnameInput, emailInput,
+    private EditText firstnameInput, lastnameInput, emailInput,
             passwordInput, passwordConfirmInput;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,7 +23,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         setContentView(R.layout.activity_register);
 
         //initialise views
-        usernameInput = (EditText) findViewById(R.id.username_edittext);
         firstnameInput = (EditText) findViewById(R.id.first_name_edittext);
         lastnameInput = (EditText) findViewById(R.id.last_name_edittext);
         emailInput = (EditText) findViewById(R.id.email_edittext);
@@ -35,10 +38,11 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onClick(View v) {
-        if (validateInputs(new EditText[]{usernameInput, firstnameInput, lastnameInput, emailInput,
+        if (validateInputs(new EditText[]{firstnameInput, lastnameInput, emailInput,
                 passwordInput, passwordConfirmInput}) && validatePasswords()) {
 
             //post data to DB using Volley
+
 
 
             //continue to LoginActivity

@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">VideoShop</string>
     <string name="register">Register</string>
-    <string name="username">Username</string>
+    <string name="email">Email</string>
     <string name="first_name">First name</string>
     <string name="last_name">Last name</string>
     <string name="e_mail">E-mail</string>
