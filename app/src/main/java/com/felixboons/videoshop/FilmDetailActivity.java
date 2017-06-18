@@ -63,8 +63,8 @@ public class FilmDetailActivity extends AppCompatActivity {
 
         //parse features if there is > 1
         String[] features = new String[4];
-        if (film.getSpecialFeatures().contains(".")) {
-            features = film.getSpecialFeatures().split("\\.");
+        if (film.getSpecialFeatures().contains(",")) {
+            features = film.getSpecialFeatures().split("\\,");
         } else {
             features[0] = film.getSpecialFeatures();
         }
@@ -85,7 +85,7 @@ public class FilmDetailActivity extends AppCompatActivity {
             }
             featureOuput.setText(features[i]);
             featureOuput.setVisibility(View.VISIBLE);
-            Log.i("FEATURES", features[i]);
+//            Log.i("FEATURES", features[i]);
         }
     }
 }

@@ -16,6 +16,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.felixboons.videoshop.Domain.Film;
+import com.felixboons.videoshop.Volley.MyJSONObjectRequest;
 import com.felixboons.videoshop.Volley.MyVolleyRequestQueue;
 
 import org.json.JSONArray;
@@ -45,12 +46,6 @@ public class FilmOverviewActivity extends AppCompatActivity implements ListView.
 
 
         films = new ArrayList<>();
-        //testdata----
-        films.add(new Film(0, "Deze fielmpje", "Deze goeie fielmpje was erg leuk. Ik zou hem zo nog een keer niet kijken. Dat wilde ik even mededelen.", 2007, 4, 0.99, 107, 21.99, "PG", null));
-        films.add(new Film(0, "Deze fielmpje", "Deze goeie fielmpje was erg leuk. Ik zou hem zo nog een keer niet kijken. Dat wilde ik even mededelen.", 2007, 4, 0.99, 107, 21.99, "PG", "No special features."));
-        films.add(new Film(0, "Deze andere gekke fielmpje", "Deze goeie fielmpje was erg leuk. Ik zou hem zo nog een keer niet kijken. Dat wilde ik even mededelen. Deze description moet even wat langer zijn. Op deze manier kan ik zien hoe dit er uit komt te zien in de applicatie. Goed, slecht? Eens even kijken...", 2007, 4, 0.99, 107, 21.99, "PG", "No special features."));
-        films.add(new Film(0, "Deine fielmpje met die extra lange titel jwz jwt", "Deze goeie fielmpje was erg leuk. Ik zou hem zo nog een keer niet kijken. Dat wilde ik even mededelen.", 2007, 4, 0.99, 107, 21.99, "PG", "Behind the scenes.Extra footage"));
-        //----
 
         //initialise queue
         queue = MyVolleyRequestQueue.getInstance(this.getApplicationContext()).getRequestQueue();
@@ -63,7 +58,7 @@ public class FilmOverviewActivity extends AppCompatActivity implements ListView.
         filmListview.setOnItemClickListener(this);
 
         showProgressDialog();
-//        sendGetFilmRequest();
+        sendGetFilmRequest();
     }
 
     @Override
@@ -78,8 +73,8 @@ public class FilmOverviewActivity extends AppCompatActivity implements ListView.
     }
 
     public void sendGetFilmRequest() {
-        String getFilmsURL = "";
-        final JsonObjectRequest req = new JsonObjectRequest(
+        String getFilmsURL = "https://video-shop-server.herokuapp.com/api/v1/films";
+        final MyJSONObjectRequest req = new MyJSONObjectRequest(
                 Request.Method.GET,
                 getFilmsURL,
                 null,
