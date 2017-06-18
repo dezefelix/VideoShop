@@ -8,12 +8,9 @@
 
     <include
         android:id="@+id/toolbar"
-<<<<<<< HEAD
-        layout="@layout/toolbar" />
-=======
         layout="@layout/toolbar">
     </include>
->>>>>>> master
+
 
     <ListView
         android:id="@+id/listview"

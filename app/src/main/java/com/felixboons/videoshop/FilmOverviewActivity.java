@@ -2,16 +2,13 @@ package com.felixboons.videoshop;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-<<<<<<< HEAD
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-=======
-import android.support.v7.widget.Toolbar;
->>>>>>> master
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -43,7 +40,6 @@ public class FilmOverviewActivity extends AppCompatActivity implements ListView.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_film_overview);
 
-<<<<<<< HEAD
         //initialise views
         ListView filmListview = (ListView) findViewById(R.id.listview);
 
@@ -137,10 +133,8 @@ public class FilmOverviewActivity extends AppCompatActivity implements ListView.
         pd = new ProgressDialog(this);
         pd.setMessage("Retrieving data...");
         pd.show();
-=======
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         myToolbar.setTitle("Film Overview");
         setSupportActionBar(myToolbar);
->>>>>>> master
     }
 }
