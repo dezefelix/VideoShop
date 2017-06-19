@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -56,7 +57,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         tokenPref = getSharedPreferences(TOKENPREFERENCE, Context.MODE_PRIVATE);
         tokenPrefEditor = tokenPref.edit();
 
-        //load credentials
+        //load credentials if available
         if (getIntent() != null) {
             emailInput.setText(getIntent().getStringExtra("email"));
             passwordInput.setText(getIntent().getStringExtra("password"));
@@ -75,8 +76,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         e.printStackTrace();
                     }
                 }
-
-
                 break;
 
             case R.id.register_button:
@@ -106,12 +105,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public JSONObject createBody() throws JSONException {
 
         //get input values
-        String username = emailInput.getText().toString().trim();
+        String email = emailInput.getText().toString().trim();
         String password = passwordInput.getText().toString();
 
         //create payload
         JSONObject payload = new JSONObject();
-        payload.put("username", username);
+        payload.put("email", email);
         payload.put("password", password);
         return payload;
     }
@@ -131,7 +130,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     //send post request to DB using Volley
     public void sendPostRequest() throws JSONException {
-        String loginURL = "";
+        String loginURL = "https://video-shop-server.herokuapp.com/api/v1/login";
         final MyJSONObjectRequest req = new MyJSONObjectRequest(
                 Request.Method.POST,
                 loginURL,
@@ -145,12 +144,23 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onErrorResponse(VolleyError error) {
         Toast.makeText(this, "Could not log in.", Toast.LENGTH_SHORT).show();
+        //cancel ProgressDialog
+        pd.cancel();
+        //clear current password
+        passwordInput.setText("");
     }
 
     @Override
     public void onResponse(JSONObject response) {
 
         //save JWT in application
+        try {
+            String token = response.getString("token");
+            tokenPrefEditor.putString("token", token);
+            tokenPrefEditor.commit();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         //continue to home screen
         Intent iHome = new Intent(this, HomescreenActivity.class);
