@@ -26,6 +26,8 @@ public class HomescreenActivity extends AppCompatActivity implements View.OnClic
 
         returnFilmButton = (LinearLayout) findViewById(R.id.return_film_button);
         returnFilmButton.setOnClickListener(this);
+
+
     }
 
     @Override
@@ -33,10 +35,12 @@ public class HomescreenActivity extends AppCompatActivity implements View.OnClic
         switch (v.getId()) {
             case R.id.rent_film_button:
                 Intent rentFilmIntent = new Intent(this, FilmOverviewActivity.class);
+                rentFilmIntent.putExtra("customer", getIntent().getSerializableExtra("customer"));
                 startActivity(rentFilmIntent);
                 break;
             case R.id.return_film_button:
                 Intent returnFilmIntent = new Intent(this, ReturnFilmActivity.class);
+                returnFilmIntent.putExtra("customer", getIntent().getSerializableExtra("customer"));
                 startActivity(returnFilmIntent);
         }
     }

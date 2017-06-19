@@ -7,7 +7,7 @@ import java.io.Serializable;
  */
 
 public class Film implements Serializable {
-    private int filmId, releaseYear, rentalDuration, length;
+    private int filmId, releaseYear, rentalDuration, length, amountOfCopies;
     private String title, description, rating, specialFeatures;
     private double price, replacementCost;
 
@@ -30,6 +30,14 @@ public class Film implements Serializable {
 
     public void setFilmId(int filmId) {
         this.filmId = filmId;
+    }
+
+    public void setAmountOfCopies(int amountOfCopies) {
+        this.amountOfCopies = amountOfCopies;
+    }
+
+    public int getAmountOfCopies() {
+        return amountOfCopies;
     }
 
     public int getReleaseYear() {
