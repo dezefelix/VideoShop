@@ -88,6 +88,7 @@ public class FilmOverviewActivity extends AppCompatActivity implements ListView.
                 getFilmsURL,
                 null,
                 this,
+                this,
                 this
         );
         queue.add(req);
