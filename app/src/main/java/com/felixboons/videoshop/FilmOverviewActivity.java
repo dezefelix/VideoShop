@@ -1,7 +1,9 @@
 package com.felixboons.videoshop;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -31,6 +33,8 @@ public class FilmOverviewActivity extends AppCompatActivity implements ListView.
     private FilmAdapter adapter;
     private ArrayList<Film> films = new ArrayList<>();
     private Film f;
+
+    public static final String TOKENPREFERENCE = "TOKEN";
 
     private RequestQueue queue;
 
@@ -89,7 +93,20 @@ public class FilmOverviewActivity extends AppCompatActivity implements ListView.
         queue.add(req);
     }
 
-    public void sendGetCopyRequest(int filmID) {
+    //create JSON body
+    public JSONObject createBody() throws JSONException {
+
+        //get token from SharedPreference
+        SharedPreferences tokenPref = getSharedPreferences(TOKENPREFERENCE, Context.MODE_PRIVATE);
+        String token = tokenPref.getString("token", "");
+
+        //create payload
+        JSONObject payload = new JSONObject();
+        payload.put("Auth", token);
+        return payload;
+    }
+
+    public void sendGetCopyRequest(int filmID) throws JSONException {
         String getFilmsURL = "https://video-shop-server.herokuapp.com/api/v1/getcopies/" + filmID;
         final MyJSONObjectRequest req = new MyJSONObjectRequest(
                 Request.Method.GET,
