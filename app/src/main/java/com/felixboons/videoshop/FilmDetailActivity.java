@@ -1,13 +1,8 @@
 package com.felixboons.videoshop;
 
-import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.felixboons.videoshop.Domain.Film;
@@ -71,19 +66,19 @@ public class FilmDetailActivity extends AppCompatActivity {
         //show special feature view(s) based on how many features there are
         for (int i = 0; i < features.length; i++) {
             //initialise view
-            TextView featureOuput;
+            TextView featureOutput;
             switch (i) {
                 case 0:
-                    featureOuput = (TextView) findViewById(R.id.film_special_feature_item_textview1);
+                    featureOutput = (TextView) findViewById(R.id.film_special_feature_item_textview1);
                     break;
                 case 1:
-                    featureOuput = (TextView) findViewById(R.id.film_special_feature_item_textview2);
+                    featureOutput = (TextView) findViewById(R.id.film_special_feature_item_textview2);
                     break;
                 default:
-                    featureOuput = (TextView) findViewById(R.id.film_special_feature_item_textview1);
+                    featureOutput = (TextView) findViewById(R.id.film_special_feature_item_textview1);
             }
-            featureOuput.setText(String.format(Locale.getDefault(), "* %s", features[i]));
-            featureOuput.setVisibility(View.VISIBLE);
+            featureOutput.setText(String.format(Locale.getDefault(), "* %s", features[i]));
+            featureOutput.setVisibility(View.VISIBLE);
         }
     }
 }
