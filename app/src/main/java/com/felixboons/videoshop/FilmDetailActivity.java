@@ -1,14 +1,9 @@
 package com.felixboons.videoshop;
 
-<<<<<<< HEAD
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-=======
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
->>>>>>> origin/development
 import android.view.View;
 import android.widget.TextView;
 
@@ -98,14 +93,11 @@ public class FilmDetailActivity extends AppCompatActivity implements View.OnClic
                 default:
                     featureOutput = (TextView) findViewById(R.id.film_special_feature_item_textview1);
             }
-<<<<<<< HEAD
-            featureOuput.setText(String.format(Locale.getDefault(), "* %s", features[i]));
 
-            featureOuput.setVisibility(View.VISIBLE);
-=======
             featureOutput.setText(String.format(Locale.getDefault(), "* %s", features[i]));
             featureOutput.setVisibility(View.VISIBLE);
->>>>>>> origin/development
+            featureOutput.setText(String.format(Locale.getDefault(), "* %s", features[i]));
+            featureOutput.setVisibility(View.VISIBLE);
         }
     }
 
