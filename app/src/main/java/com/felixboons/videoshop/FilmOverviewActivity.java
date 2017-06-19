@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -29,6 +30,7 @@ public class FilmOverviewActivity extends AppCompatActivity implements ListView.
 
     private FilmAdapter adapter;
     private ArrayList<Film> films = new ArrayList<>();
+    private Film f;
 
     private RequestQueue queue;
 
@@ -88,6 +90,36 @@ public class FilmOverviewActivity extends AppCompatActivity implements ListView.
         queue.add(req);
     }
 
+    public void sendGetCopyRequest(int filmID) {
+        String getFilmsURL = "https://video-shop-server.herokuapp.com/api/v1/getcopies/" + filmID;
+        final MyJSONObjectRequest req = new MyJSONObjectRequest(
+                Request.Method.GET,
+                getFilmsURL,
+                null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            JSONArray copyArray = response.getJSONArray("copies");
+                            int amountOfCopies = copyArray.getJSONObject(0).optInt("Amount");
+                            f.setAmountOfCopies(amountOfCopies);
+                            films.add(f);
+                            adapter.notifyDataSetChanged();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(FilmOverviewActivity.this, "Copies weren't found", Toast.LENGTH_SHORT).show();
+                    }
+                }
+        );
+        queue.add(req);
+    }
+
     @Override
     public void onErrorResponse(VolleyError error) {
 
@@ -112,14 +144,11 @@ public class FilmOverviewActivity extends AppCompatActivity implements ListView.
                 String rating = film.optString("rating");
                 String specialFeatures = film.optString("special_features");
 
-                Film f = new Film(id, title, description, releaseYear, rentalDuration,
+                f = new Film(id, title, description, releaseYear, rentalDuration,
                         price, length, replacementCost, rating, specialFeatures);
 
-                this.films.add(f);
-
-                adapter.notifyDataSetChanged();
+                sendGetCopyRequest(id);
             }
-
             pd.cancel();
         } catch (JSONException e) {
 
