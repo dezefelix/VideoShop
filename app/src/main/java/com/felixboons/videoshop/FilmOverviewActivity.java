@@ -53,7 +53,6 @@ public class FilmOverviewActivity extends AppCompatActivity implements ListView.
         //initialise views
         ListView filmListview = (ListView) findViewById(R.id.listview);
 
-
         films = new ArrayList<>();
 
         //initialise queue
@@ -132,7 +131,8 @@ public class FilmOverviewActivity extends AppCompatActivity implements ListView.
                     public void onErrorResponse(VolleyError error) {
                         Toast.makeText(FilmOverviewActivity.this, "Copies weren't found", Toast.LENGTH_SHORT).show();
                     }
-                }
+                },
+                this
         );
         queue.add(req);
     }

@@ -20,6 +20,8 @@ import java.util.Locale;
 
 public class RentalAdapter extends ArrayAdapter<Rental> {
 
+    private String TAG = this.getClass().getSimpleName();
+
     public RentalAdapter(Context context, ArrayList<Rental> rentals) {
         super(context, 0, rentals);
     }
@@ -29,7 +31,7 @@ public class RentalAdapter extends ArrayAdapter<Rental> {
         Rental rental = getItem(position);
 
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_film, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_rental, parent, false);
         }
 
         //initialise views
@@ -41,15 +43,19 @@ public class RentalAdapter extends ArrayAdapter<Rental> {
         titleOutput.setText(rental.getTitle());
         rentalDateOutput.setText(String.format(Locale.getDefault(), "Film rented at: %s", formatDate(rental.getRentalDate())));
         rentalDurationLeftOutput.setText(String.format(Locale.getDefault(), "Days left to return this film: %d", calcRentalDaysLeft(rental.getRentalDuration(), rental.getRentalDate())));
-
         return convertView;
     }
 
+    //calculate the days that are left to return the film.
+    //rental date - current time
     public int calcRentalDaysLeft(int totalDays, Date date) {
+        //create current date
         Date currentDate = new Date();
-        long diff = Math.abs(date.getTime() - currentDate.getTime());
-        int days = (int) diff / 1000 / 60 / 60 / 24;
-
+        //calc difference between rental date and current date (in milliseconds)
+        long diff = Math.abs(currentDate.getTime() - date.getTime());
+        //convert milliseconds to days
+        int days = (int) (diff / 1000 / 60 / 60 / 24);
+        //return days that are remaining to return this film
         return totalDays - days;
     }
 

@@ -3,14 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.felixboons.videoshop.ReturnFilmActivity">
 
     <include android:id="@+id/toolbar"
         layout="@layout/toolbar" />
 
     <ListView
-        android:id="@+id/listview"
+        android:id="@+id/rental_listview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent" />
 
 </LinearLayout>
