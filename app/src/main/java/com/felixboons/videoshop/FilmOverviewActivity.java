@@ -58,9 +58,12 @@ public class FilmOverviewActivity extends AppCompatActivity implements ListView.
         //initialise views
         ListView filmListview = (ListView) findViewById(R.id.listview);
 
+<<<<<<< HEAD
         //get customer from intent
         c = (Customer) getIntent().getSerializableExtra("customer");
 
+=======
+>>>>>>> origin/development
         films = new ArrayList<>();
 
         //initialise queue
