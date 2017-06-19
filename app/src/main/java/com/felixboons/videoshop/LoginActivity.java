@@ -127,13 +127,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         sendPostRequest();
     }
 
-    //show ProgressDialog while logging in
-    public void showProgressDialog() {
-        pd = new ProgressDialog(this);
-        pd.setMessage("Logging in...");
-        pd.show();
-    }
-
     //send post request to DB using Volley
     public void sendPostRequest() throws JSONException {
         String loginURL = "https://video-shop-server.herokuapp.com/api/v1/login";
@@ -180,5 +173,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         //cancel ProgressDialog
         pd.cancel();
+    }
+
+    //show ProgressDialog while logging in
+    public void showProgressDialog() {
+        pd = new ProgressDialog(this);
+        pd.setMessage("Logging in...");
+        pd.show();
     }
 }

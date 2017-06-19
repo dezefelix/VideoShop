@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -29,7 +30,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class FilmOverviewActivity extends AppCompatActivity implements ListView.OnItemClickListener,
-        Response.ErrorListener, Response.Listener<JSONObject> {
+        View.OnClickListener, Response.ErrorListener, Response.Listener<JSONObject> {
 
     private FilmAdapter adapter;
     private ArrayList<Film> films = new ArrayList<>();
@@ -52,11 +53,12 @@ public class FilmOverviewActivity extends AppCompatActivity implements ListView.
 
         //initialise toolbar
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
-        myToolbar.setTitle("Film Overview");
+        myToolbar.setTitle("Rent a film");
         setSupportActionBar(myToolbar);
 
         //initialise views
         ListView filmListview = (ListView) findViewById(R.id.listview);
+        TextView logOutBtn = (TextView) findViewById(R.id.login_button);
 
         //get customer from intent
         c = (Customer) getIntent().getSerializableExtra("customer");
@@ -72,6 +74,8 @@ public class FilmOverviewActivity extends AppCompatActivity implements ListView.
 
         //set listener
         filmListview.setOnItemClickListener(this);
+        logOutBtn.setOnClickListener(this);
+
 
         showProgressDialog();
         sendGetFilmRequest();
@@ -133,9 +137,7 @@ public class FilmOverviewActivity extends AppCompatActivity implements ListView.
                             films.add(film);
                             adapter.notifyDataSetChanged();
                             if(lastFilmID == film.getFilmId()){
-                                Log.i("hoi", "hoi");
                                 pd.cancel();
-
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -195,5 +197,20 @@ public class FilmOverviewActivity extends AppCompatActivity implements ListView.
         pd = new ProgressDialog(this);
         pd.setMessage("Retrieving data...");
         pd.show();
+    }
+
+    //log out feature
+    @Override
+    public void onClick(View v) {
+        //clear token
+        SharedPreferences tokenPref = getSharedPreferences(LoginActivity.TOKENPREFERENCE, Context.MODE_PRIVATE);
+        SharedPreferences.Editor tokenPrefEditor = tokenPref.edit();
+        tokenPrefEditor.remove("token");
+        tokenPrefEditor.commit();
+
+        //return to log in screen
+        Intent i = new Intent(this, LoginActivity.class);
+        startActivity(i);
+        finish();
     }
 }

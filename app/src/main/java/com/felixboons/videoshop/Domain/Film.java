@@ -131,14 +131,16 @@ public class Film implements Serializable {
         return "Film{" +
                 "filmId=" + filmId +
                 ", releaseYear=" + releaseYear +
+                ", rentalDuration=" + rentalDuration +
+                ", length=" + length +
+                ", amountOfCopies=" + amountOfCopies +
+                ", inventoryID=" + inventoryID +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
-                ", rentalDuration='" + rentalDuration + '\'' +
-                ", price='" + price + '\'' +
-                ", length='" + length + '\'' +
-                ", replacementCost='" + replacementCost + '\'' +
                 ", rating='" + rating + '\'' +
                 ", specialFeatures='" + specialFeatures + '\'' +
+                ", price=" + price +
+                ", replacementCost=" + replacementCost +
                 '}';
     }
 }
