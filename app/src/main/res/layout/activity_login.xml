@@ -34,13 +34,14 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/username" />
+            android:text="@string/email" />
 
         <EditText
-            android:id="@+id/username_edittext"
+            android:id="@+id/email_edittext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text"
+            android:text="admin"
             style="@style/default_edittext_style"
             android:layout_marginBottom="@dimen/margin_half"/>
 
@@ -54,6 +55,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
+            android:text="admin"
             style="@style/default_edittext_style" />
 
         <LinearLayout

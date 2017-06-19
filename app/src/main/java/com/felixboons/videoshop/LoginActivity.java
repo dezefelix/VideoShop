@@ -16,6 +16,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.felixboons.videoshop.Domain.Customer;
 import com.felixboons.videoshop.Volley.MyJSONObjectRequest;
 import com.felixboons.videoshop.Volley.MyVolleyRequestQueue;
 
@@ -24,7 +25,7 @@ import org.json.JSONObject;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, Response.ErrorListener, Response.Listener<JSONObject> {
 
-    private EditText usernameInput, passwordInput;
+    private EditText emailInput, passwordInput;
     private RequestQueue queue;
     private ProgressDialog pd;
 
@@ -38,7 +39,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_login);
 
         //initialise views
-        usernameInput = (EditText) findViewById(R.id.username_edittext);
+        emailInput = (EditText) findViewById(R.id.email_edittext);
         passwordInput = (EditText) findViewById(R.id.password_edittext);
         Button loginBtn = (Button) findViewById(R.id.login_button);
         Button registerBtn = (Button) findViewById(R.id.register_button);
@@ -55,6 +56,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         //create SharedPreference
         tokenPref = getSharedPreferences(TOKENPREFERENCE, Context.MODE_PRIVATE);
         tokenPrefEditor = tokenPref.edit();
+
+        //load credentials if available
+        if (getIntent() != null) {
+            emailInput.setText(getIntent().getStringExtra("email"));
+            passwordInput.setText(getIntent().getStringExtra("password"));
+        }
     }
 
     @Override
@@ -69,8 +76,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         e.printStackTrace();
                     }
                 }
-
-
                 break;
 
             case R.id.register_button:
@@ -87,7 +92,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     public boolean validateInput() {
-        if (usernameInput.getText().toString().trim().equals("") ||
+        if (emailInput.getText().toString().trim().equals("") ||
                 passwordInput.getText().toString().trim().equals("")) {
             Toast.makeText(this, "One or more fields are empty.", Toast.LENGTH_SHORT).show();
             return false;
@@ -96,15 +101,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
+    //create JSON body
     public JSONObject createBody() throws JSONException {
 
         //get input values
-        String username = usernameInput.getText().toString().trim();
+        String email = emailInput.getText().toString().trim();
         String password = passwordInput.getText().toString();
 
         //create payload
         JSONObject payload = new JSONObject();
-        payload.put("username", username);
+        payload.put("email", email);
         payload.put("password", password);
         return payload;
     }
@@ -124,7 +130,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     //send post request to DB using Volley
     public void sendPostRequest() throws JSONException {
-        String loginURL = "";
+        String loginURL = "https://video-shop-server.herokuapp.com/api/v1/login";
         final MyJSONObjectRequest req = new MyJSONObjectRequest(
                 Request.Method.POST,
                 loginURL,
@@ -138,15 +144,31 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onErrorResponse(VolleyError error) {
         Toast.makeText(this, "Could not log in.", Toast.LENGTH_SHORT).show();
+        //cancel ProgressDialog
+        pd.cancel();
+        //clear current password
+        passwordInput.setText("");
     }
 
     @Override
     public void onResponse(JSONObject response) {
 
         //save JWT in application
+        try {
+            String token = response.getString("token");
+            tokenPrefEditor.putString("token", token);
+            tokenPrefEditor.commit();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        //create customer
+        int id = response.optInt("customerID");
+        Customer c = new Customer(id);
 
         //continue to home screen
         Intent iHome = new Intent(this, HomescreenActivity.class);
+        iHome.putExtra("customer", c);
         startActivity(iHome);
 
         //cancel ProgressDialog
