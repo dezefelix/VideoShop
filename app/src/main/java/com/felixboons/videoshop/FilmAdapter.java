@@ -36,6 +36,7 @@ public class FilmAdapter extends ArrayAdapter<Film> {
         TextView ratingOutput = (TextView) convertView.findViewById(R.id.film_rating_textview);
         TextView lengthOutput = (TextView) convertView.findViewById(R.id.film_length_textview);
         TextView priceOutput = (TextView) convertView.findViewById(R.id.film_price_textview);
+        TextView copiesOutput = (TextView) convertView.findViewById(R.id.film_copies_textview);
 
         //add value to views
         titleOutput.setText(film.getTitle());
@@ -43,6 +44,7 @@ public class FilmAdapter extends ArrayAdapter<Film> {
         ratingOutput.setText(film.getRating());
         lengthOutput.setText(film.getLength() + " min.");
         priceOutput.setText("$" + film.getPrice());
+        copiesOutput.setText(film.getAmountOfCopies()+" copies");
 
         return convertView;
     }
