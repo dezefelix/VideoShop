@@ -1,22 +1,31 @@
 package com.felixboons.videoshop;
 
 import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.felixboons.videoshop.Domain.Customer;
 import com.felixboons.videoshop.Domain.Film;
+import com.felixboons.videoshop.Volley.MyJSONObjectRequest;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Locale;
 
-public class FilmDetailActivity extends AppCompatActivity {
+public class FilmDetailActivity extends AppCompatActivity implements View.OnClickListener, Response.ErrorListener, Response.Listener<JSONObject> {
 
     private Film film;
+    private Customer customer;
+    public static final String TOKENPREFERENCE = "TOKEN";
+    private RequestQueue queue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +34,7 @@ public class FilmDetailActivity extends AppCompatActivity {
 
         //get intent values
         film = (Film) getIntent().getSerializableExtra("film");
-
+        customer = (Customer) getIntent().getSerializableExtra("customer");
         fillViews();
     }
 
@@ -53,6 +62,8 @@ public class FilmDetailActivity extends AppCompatActivity {
         descriptionOutput.setText(String.format(Locale.getDefault(), "%s.", film.getDescription()));
         rentalDurationOutput.setText(String.format(Locale.getDefault(), "Max rental duration: %d days", film.getRentalDuration()));
         replacementCostOutput.setText(String.format(Locale.getDefault(), "Replacement cost: $%.2f", film.getReplacementCost()));
+
+
     }
 
     //parse special features information
@@ -83,7 +94,57 @@ public class FilmDetailActivity extends AppCompatActivity {
                     featureOuput = (TextView) findViewById(R.id.film_special_feature_item_textview1);
             }
             featureOuput.setText(String.format(Locale.getDefault(), "* %s", features[i]));
+
             featureOuput.setVisibility(View.VISIBLE);
         }
+    }
+
+    public void sendRentFilmRequest() throws JSONException {
+        String rentFilmURL = "https://video-shop-server.herokuapp.com/api/v1/rentals/" + customer.getCustomerId() + "/" + film.getInventoryID();
+        final MyJSONObjectRequest req = new MyJSONObjectRequest(
+                Request.Method.POST,
+                rentFilmURL,
+                createBody(),
+                this,
+                this,
+                this
+        );
+        queue.add(req);
+    }
+
+    //create JSON body
+    public JSONObject createBody() throws JSONException {
+
+        //get token from SharedPreference
+        SharedPreferences tokenPref = getSharedPreferences(TOKENPREFERENCE, Context.MODE_PRIVATE);
+        String token = tokenPref.getString("token", "");
+
+        //create payload
+        JSONObject payload = new JSONObject();
+        payload.put("Auth", token);
+        return payload;
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.rent_film_button:
+                try {
+                    sendRentFilmRequest();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                break;
+        }
+    }
+
+    @Override
+    public void onErrorResponse(VolleyError error) {
+
+    }
+
+    @Override
+    public void onResponse(JSONObject response) {
+
     }
 }

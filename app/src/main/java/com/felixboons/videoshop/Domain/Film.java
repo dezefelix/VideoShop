@@ -7,11 +7,16 @@ import java.io.Serializable;
  */
 
 public class Film implements Serializable {
-    private int filmId, releaseYear, rentalDuration, length, amountOfCopies;
+    private int filmId;
+    private int releaseYear;
+    private int rentalDuration;
+    private int length;
+    private int amountOfCopies;
+    private int inventoryID;
     private String title, description, rating, specialFeatures;
     private double price, replacementCost;
 
-    public Film(int filmId, String title, String description, int releaseYear, int rentalDuration, double price, int length, double replacementCost, String rating, String specialFeatures) {
+    public Film(int filmId, String title, String description, int releaseYear, int rentalDuration, int amountOfCopies, double price, int length, double replacementCost, String rating, String specialFeatures) {
         this.filmId = filmId;
         this.releaseYear = releaseYear;
         this.title = title;
@@ -22,6 +27,7 @@ public class Film implements Serializable {
         this.replacementCost = replacementCost;
         this.rating = rating;
         this.specialFeatures = specialFeatures;
+        this.amountOfCopies = amountOfCopies;
     }
 
     public int getFilmId() {
@@ -30,6 +36,14 @@ public class Film implements Serializable {
 
     public void setFilmId(int filmId) {
         this.filmId = filmId;
+    }
+
+    public int getInventoryID() {
+        return inventoryID;
+    }
+
+    public void setInventoryID(int inventoryID) {
+        this.inventoryID = inventoryID;
     }
 
     public void setAmountOfCopies(int amountOfCopies) {

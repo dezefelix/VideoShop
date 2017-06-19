@@ -17,6 +17,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.felixboons.videoshop.Domain.Customer;
 import com.felixboons.videoshop.Domain.Film;
 import com.felixboons.videoshop.Volley.MyJSONObjectRequest;
 import com.felixboons.videoshop.Volley.MyVolleyRequestQueue;
@@ -33,6 +34,10 @@ public class FilmOverviewActivity extends AppCompatActivity implements ListView.
     private FilmAdapter adapter;
     private ArrayList<Film> films = new ArrayList<>();
     private Film f;
+    private int amountOfCopies;
+    private int inventoryID;
+    private int lastFilmID;
+    private Customer c;
 
     public static final String TOKENPREFERENCE = "TOKEN";
 
@@ -53,6 +58,8 @@ public class FilmOverviewActivity extends AppCompatActivity implements ListView.
         //initialise views
         ListView filmListview = (ListView) findViewById(R.id.listview);
 
+        //get customer from intent
+        c = (Customer) getIntent().getSerializableExtra("customer");
 
         films = new ArrayList<>();
 
@@ -78,6 +85,7 @@ public class FilmOverviewActivity extends AppCompatActivity implements ListView.
         //continue to detail screen
         Intent i = new Intent(this, FilmDetailActivity.class);
         i.putExtra("film", film);
+        i.putExtra("customer", c);
         startActivity(i);
     }
 
@@ -107,8 +115,8 @@ public class FilmOverviewActivity extends AppCompatActivity implements ListView.
         return payload;
     }
 
-    public void sendGetCopyRequest(int filmID) throws JSONException {
-        String getFilmsURL = "https://video-shop-server.herokuapp.com/api/v1/getcopies/" + filmID;
+    public void sendGetCopyRequest(final Film film) throws JSONException {
+        String getFilmsURL = "https://video-shop-server.herokuapp.com/api/v1/getcopies/" + film.getFilmId();
         final MyJSONObjectRequest req = new MyJSONObjectRequest(
                 Request.Method.GET,
                 getFilmsURL,
@@ -118,10 +126,17 @@ public class FilmOverviewActivity extends AppCompatActivity implements ListView.
                     public void onResponse(JSONObject response) {
                         try {
                             JSONArray copyArray = response.getJSONArray("copies");
-                            int amountOfCopies = copyArray.getJSONObject(0).optInt("Amount");
-                            f.setAmountOfCopies(amountOfCopies);
-                            films.add(f);
+                            amountOfCopies = copyArray.getJSONObject(0).optInt("Amount");
+                            inventoryID = copyArray.getJSONObject(0).optInt("inventory_id");
+                            film.setInventoryID(inventoryID);
+                            film.setAmountOfCopies(amountOfCopies);
+                            films.add(film);
                             adapter.notifyDataSetChanged();
+                            if(lastFilmID == film.getFilmId()){
+                                Log.i("hoi", "hoi");
+                                pd.cancel();
+
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -132,7 +147,8 @@ public class FilmOverviewActivity extends AppCompatActivity implements ListView.
                     public void onErrorResponse(VolleyError error) {
                         Toast.makeText(FilmOverviewActivity.this, "Copies weren't found", Toast.LENGTH_SHORT).show();
                     }
-                }
+                },
+                this
         );
         queue.add(req);
     }
@@ -161,12 +177,13 @@ public class FilmOverviewActivity extends AppCompatActivity implements ListView.
                 String rating = film.optString("rating");
                 String specialFeatures = film.optString("special_features");
 
-                f = new Film(id, title, description, releaseYear, rentalDuration,
+                f = new Film(id, title, description, releaseYear, rentalDuration, 0,
                         price, length, replacementCost, rating, specialFeatures);
-
-                sendGetCopyRequest(id);
+                sendGetCopyRequest(f);
+                if(filmsArray.length()-1 == i){
+                    lastFilmID = id;
+                }
             }
-            pd.cancel();
         } catch (JSONException e) {
 
             e.printStackTrace();
