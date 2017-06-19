@@ -56,6 +56,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 getFilmsURL,
                 createBody(),
                 this,
+                this,
                 this
         );
         queue.add(req);

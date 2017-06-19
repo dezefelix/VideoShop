@@ -40,9 +40,6 @@ public class ReturnFilmActivity extends AppCompatActivity implements ListView.On
 
     private ProgressDialog pd;
 
-    public static final String TOKENPREFERENCE = "TOKEN";
-    private Customer c;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +50,6 @@ public class ReturnFilmActivity extends AppCompatActivity implements ListView.On
 
         //initialise ArrayList
         rentals = new ArrayList<>();
-
         //initialise queue
         queue = MyVolleyRequestQueue.getInstance(this.getApplicationContext()).getRequestQueue();
 
@@ -67,9 +63,6 @@ public class ReturnFilmActivity extends AppCompatActivity implements ListView.On
         //show ProgressDialog
         showProgressDialog();
         try {
-            //get customer from intent
-            c = (Customer) getIntent().getSerializableExtra("customer");
-
             sendGetFilmRequest();
         } catch (JSONException e) {
             e.printStackTrace();
@@ -77,29 +70,23 @@ public class ReturnFilmActivity extends AppCompatActivity implements ListView.On
     }
 
     public void sendGetFilmRequest() throws JSONException {
+        //cancel ProgressDialog
         pd.cancel();
-        String getFilmsURL = "https://video-shop-server.herokuapp.com/api/v1/rentals/" + c.getCustomerId();
+
+        //get customer from intent
+        Customer c = (Customer) getIntent().getSerializableExtra("customer");
+
+        String getFilmsURL = "https://video-shop-server.herokuapp.com/api/v1/rentals/" +
+                c.getCustomerId();
         final MyJSONObjectRequest req = new MyJSONObjectRequest(
                 Request.Method.GET,
                 getFilmsURL,
-                createBody(),
+                null,
+                this,
                 this,
                 this
         );
         queue.add(req);
-    }
-
-    //create JSON body
-    public JSONObject createBody() throws JSONException {
-
-        //get token from SharedPreference
-        SharedPreferences tokenPref = getSharedPreferences(TOKENPREFERENCE, Context.MODE_PRIVATE);
-        String token = tokenPref.getString("token", "");
-
-        //create payload
-        JSONObject payload = new JSONObject();
-        payload.put("Auth", token);
-        return payload;
     }
 
     @Override
@@ -138,7 +125,7 @@ public class ReturnFilmActivity extends AppCompatActivity implements ListView.On
         final MyJSONObjectRequest req = new MyJSONObjectRequest(
                 Request.Method.PUT,
                 URL,
-                createBody(),
+                null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
@@ -154,7 +141,8 @@ public class ReturnFilmActivity extends AppCompatActivity implements ListView.On
                         error.printStackTrace();
                         Toast.makeText(ReturnFilmActivity.this, "Could not return film.", Toast.LENGTH_SHORT).show();
                     }
-                });
+                },
+                this);
         req.setTag("MyVolleyActivityTAG");
         queue.add(req);
     }
