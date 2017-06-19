@@ -14,7 +14,6 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.felixboons.videoshop.Domain.Film;
 import com.felixboons.videoshop.Volley.MyJSONObjectRequest;
 import com.felixboons.videoshop.Volley.MyVolleyRequestQueue;
@@ -24,7 +23,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-
 
 public class FilmOverviewActivity extends AppCompatActivity implements ListView.OnItemClickListener,
         Response.ErrorListener, Response.Listener<JSONObject> {
@@ -40,6 +38,11 @@ public class FilmOverviewActivity extends AppCompatActivity implements ListView.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_film_overview);
+
+        //initialise toolbar
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
+        myToolbar.setTitle("Film Overview");
+        setSupportActionBar(myToolbar);
 
         //initialise views
         ListView filmListview = (ListView) findViewById(R.id.listview);
@@ -128,8 +131,5 @@ public class FilmOverviewActivity extends AppCompatActivity implements ListView.
         pd = new ProgressDialog(this);
         pd.setMessage("Retrieving data...");
         pd.show();
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
-        myToolbar.setTitle("Film Overview");
-        setSupportActionBar(myToolbar);
     }
 }
