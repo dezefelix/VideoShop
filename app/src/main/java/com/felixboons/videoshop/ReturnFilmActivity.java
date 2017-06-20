@@ -190,7 +190,7 @@ public class ReturnFilmActivity extends AppCompatActivity implements ListView.On
     //show ProgressDialog while retrieving film data
     public void showProgressDialog() {
         pd = new ProgressDialog(this);
-        pd.setMessage("Retrieving data...");
+        pd.setMessage("Retrieving rented films...");
         pd.show();
     }
 

@@ -182,7 +182,7 @@ public class FilmOverviewActivity extends AppCompatActivity implements ListView.
     //show ProgressDialog while retrieving film data
     public void showProgressDialog() {
         pd = new ProgressDialog(this);
-        pd.setMessage("Retrieving data...");
+        pd.setMessage("Retrieving films...");
         pd.show();
     }
 

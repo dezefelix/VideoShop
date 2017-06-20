@@ -152,7 +152,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     //show ProgressDialog while registering
     public void showProgressDialog() {
         pd = new ProgressDialog(this);
-        pd.setMessage("Logging in...");
+        pd.setMessage("Registering...");
         pd.show();
     }
 }
