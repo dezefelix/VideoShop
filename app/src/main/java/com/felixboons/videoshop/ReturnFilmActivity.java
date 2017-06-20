@@ -166,11 +166,10 @@ public class ReturnFilmActivity extends AppCompatActivity implements ListView.On
                 int inventoryId = rental.optInt("inventory_id");
                 String title = rental.optString("title");
                 Date rentalDate = parseDate(rental.optString("rental_date"));
-                Date returnDate = parseDate(rental.optString("return_date"));
                 int rentalDuration = rental.optInt("rental_duration");
 
                 Rental r = new Rental(rentalId, customerId, inventoryId, rentalDuration,
-                        rentalDate, returnDate, title);
+                        rentalDate, null, title);
 
                 rentals.add(r);
 //                Log.i(this.getClass().getSimpleName(), rentals.get(i).toString());

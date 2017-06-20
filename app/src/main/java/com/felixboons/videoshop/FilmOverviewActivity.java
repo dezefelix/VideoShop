@@ -11,12 +11,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.felixboons.videoshop.Domain.Customer;
 import com.felixboons.videoshop.Domain.Film;
 import com.felixboons.videoshop.Volley.MyJSONObjectRequest;
 import com.felixboons.videoshop.Volley.MyVolleyRequestQueue;
@@ -28,11 +30,15 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class FilmOverviewActivity extends AppCompatActivity implements ListView.OnItemClickListener,
-        Response.ErrorListener, Response.Listener<JSONObject> {
+        View.OnClickListener, Response.ErrorListener, Response.Listener<JSONObject> {
 
     private FilmAdapter adapter;
     private ArrayList<Film> films = new ArrayList<>();
     private Film f;
+    private int amountOfCopies;
+    private int inventoryID;
+    private int lastFilmID;
+    private Customer c;
 
     public static final String TOKENPREFERENCE = "TOKEN";
 
@@ -47,11 +53,15 @@ public class FilmOverviewActivity extends AppCompatActivity implements ListView.
 
         //initialise toolbar
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
-        myToolbar.setTitle("Film Overview");
+        myToolbar.setTitle("Rent a film");
         setSupportActionBar(myToolbar);
 
         //initialise views
         ListView filmListview = (ListView) findViewById(R.id.listview);
+        TextView logOutBtn = (TextView) findViewById(R.id.logout_button);
+
+        //get customer from intent
+        c = (Customer) getIntent().getSerializableExtra("customer");
 
         films = new ArrayList<>();
 
@@ -64,6 +74,8 @@ public class FilmOverviewActivity extends AppCompatActivity implements ListView.
 
         //set listener
         filmListview.setOnItemClickListener(this);
+        logOutBtn.setOnClickListener(this);
+
 
         showProgressDialog();
         sendGetFilmRequest();
@@ -77,6 +89,7 @@ public class FilmOverviewActivity extends AppCompatActivity implements ListView.
         //continue to detail screen
         Intent i = new Intent(this, FilmDetailActivity.class);
         i.putExtra("film", film);
+        i.putExtra("customer", c);
         startActivity(i);
     }
 
@@ -93,21 +106,8 @@ public class FilmOverviewActivity extends AppCompatActivity implements ListView.
         queue.add(req);
     }
 
-    //create JSON body
-    public JSONObject createBody() throws JSONException {
-
-        //get token from SharedPreference
-        SharedPreferences tokenPref = getSharedPreferences(TOKENPREFERENCE, Context.MODE_PRIVATE);
-        String token = tokenPref.getString("token", "");
-
-        //create payload
-        JSONObject payload = new JSONObject();
-        payload.put("Auth", token);
-        return payload;
-    }
-
-    public void sendGetCopyRequest(int filmID) throws JSONException {
-        String getFilmsURL = "https://video-shop-server.herokuapp.com/api/v1/getcopies/" + filmID;
+    public void sendGetCopyRequest(final Film film) throws JSONException {
+        String getFilmsURL = "https://video-shop-server.herokuapp.com/api/v1/getcopies/" + film.getFilmId();
         final MyJSONObjectRequest req = new MyJSONObjectRequest(
                 Request.Method.GET,
                 getFilmsURL,
@@ -117,10 +117,15 @@ public class FilmOverviewActivity extends AppCompatActivity implements ListView.
                     public void onResponse(JSONObject response) {
                         try {
                             JSONArray copyArray = response.getJSONArray("copies");
-                            int amountOfCopies = copyArray.getJSONObject(0).optInt("Amount");
-                            f.setAmountOfCopies(amountOfCopies);
-                            films.add(f);
+                            amountOfCopies = copyArray.getJSONObject(0).optInt("Amount");
+                            inventoryID = copyArray.getJSONObject(0).optInt("inventory_id");
+                            film.setInventoryID(inventoryID);
+                            film.setAmountOfCopies(amountOfCopies);
+                            films.add(film);
                             adapter.notifyDataSetChanged();
+                            if(lastFilmID == film.getFilmId()){
+                                pd.cancel();
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -161,12 +166,13 @@ public class FilmOverviewActivity extends AppCompatActivity implements ListView.
                 String rating = film.optString("rating");
                 String specialFeatures = film.optString("special_features");
 
-                f = new Film(id, title, description, releaseYear, rentalDuration,
+                f = new Film(id, title, description, releaseYear, rentalDuration, 0,
                         price, length, replacementCost, rating, specialFeatures);
-
-                sendGetCopyRequest(id);
+                sendGetCopyRequest(f);
+                if(filmsArray.length()-1 == i){
+                    lastFilmID = id;
+                }
             }
-            pd.cancel();
         } catch (JSONException e) {
 
             e.printStackTrace();
@@ -178,5 +184,20 @@ public class FilmOverviewActivity extends AppCompatActivity implements ListView.
         pd = new ProgressDialog(this);
         pd.setMessage("Retrieving data...");
         pd.show();
+    }
+
+    //log out feature
+    @Override
+    public void onClick(View v) {
+        //clear token
+        SharedPreferences tokenPref = getSharedPreferences(LoginActivity.TOKENPREFERENCE, Context.MODE_PRIVATE);
+        SharedPreferences.Editor tokenPrefEditor = tokenPref.edit();
+        tokenPrefEditor.remove("token");
+        tokenPrefEditor.commit();
+
+        //return to log in screen
+        Intent i = new Intent(this, LoginActivity.class);
+        startActivity(i);
+        finish();
     }
 }

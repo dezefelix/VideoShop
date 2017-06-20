@@ -18,16 +18,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-<<<<<<< HEAD
-        <activity android:name=".HomescreenActivity">
-        </activity>
-=======
         <activity android:name=".HomescreenActivity" />
->>>>>>> origin/development
         <activity android:name=".RegisterActivity" />
         <activity android:name=".FilmOverviewActivity" />
         <activity android:name=".FilmDetailActivity" />
-        <activity android:name=".ReturnFilmActivity"></activity>
+        <activity android:name=".ReturnFilmActivity" />
     </application>
 
 </manifest>
