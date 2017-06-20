@@ -48,6 +48,7 @@ public class FilmDetailActivity extends AppCompatActivity implements View.OnClic
 
         //initialise view
         Button rentBtn = (Button) findViewById(R.id.rent_film_button);
+        TextView logOutBtn = (TextView) findViewById(R.id.logout_button);
 
         //get intent values
         film = (Film) getIntent().getSerializableExtra("film");
@@ -60,6 +61,7 @@ public class FilmDetailActivity extends AppCompatActivity implements View.OnClic
 
         //add listener
         rentBtn.setOnClickListener(this);
+        logOutBtn.setOnClickListener(this);
 
     }
 
@@ -91,7 +93,7 @@ public class FilmDetailActivity extends AppCompatActivity implements View.OnClic
 
     }
 
-    //parse special features information
+    //parse special features information and put values in view(s)
     public void inflateFeatureView(TextView v) {
         //set "include:" view visible
         v.setVisibility(View.VISIBLE);
@@ -100,29 +102,24 @@ public class FilmDetailActivity extends AppCompatActivity implements View.OnClic
         String[] features = new String[4];
         if (film.getSpecialFeatures().contains(",")) {
             features = film.getSpecialFeatures().split("\\,");
+
+            //initialise views
+            TextView featureOutput1 = (TextView) findViewById(R.id.film_special_feature_item_textview1);
+            TextView featureOutput2 = (TextView) findViewById(R.id.film_special_feature_item_textview2);
+            //set text values & show view
+            featureOutput1.setText(String.format(Locale.getDefault(), "* %s", features[0]));
+            featureOutput1.setVisibility(View.VISIBLE);
+            featureOutput2.setText(String.format(Locale.getDefault(), "* %s", features[1]));
+            featureOutput2.setVisibility(View.VISIBLE);
+
+            //if there's only one feature...
         } else {
             features[0] = film.getSpecialFeatures();
-        }
-
-        //show special feature view(s) based on how many features there are
-        for (int i = 0; i < features.length; i++) {
             //initialise view
-            TextView featureOutput;
-            switch (i) {
-                case 0:
-                    featureOutput = (TextView) findViewById(R.id.film_special_feature_item_textview1);
-                    break;
-                case 1:
-                    featureOutput = (TextView) findViewById(R.id.film_special_feature_item_textview2);
-                    break;
-                default:
-                    featureOutput = (TextView) findViewById(R.id.film_special_feature_item_textview1);
-            }
-
-            featureOutput.setText(String.format(Locale.getDefault(), "* %s", features[i]));
-            featureOutput.setVisibility(View.VISIBLE);
-            featureOutput.setText(String.format(Locale.getDefault(), "* %s", features[i]));
-            featureOutput.setVisibility(View.VISIBLE);
+            TextView featureOutput1 = (TextView) findViewById(R.id.film_special_feature_item_textview1);
+            //set text value & show view
+            featureOutput1.setText(String.format(Locale.getDefault(), "* %s", features[0]));
+            featureOutput1.setVisibility(View.VISIBLE);
         }
     }
 
@@ -169,19 +166,19 @@ public class FilmDetailActivity extends AppCompatActivity implements View.OnClic
     @Override
     public void onErrorResponse(VolleyError error) {
         pd.cancel();
-        Toast.makeText(this, "Film succesfully rented. Go to 'RETURN FILMS' for more information.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Could not rent this film.", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onResponse(JSONObject response) {
         pd.cancel();
-        Toast.makeText(this, "Could not rent this film.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Film succesfully rented. Go to 'RETURN FILMS' for more information.", Toast.LENGTH_SHORT).show();
     }
 
     //show ProgressDialog while logging in
     public void showProgressDialog() {
         pd = new ProgressDialog(this);
-        pd.setMessage("Logging in...");
+        pd.setMessage("Renting film...");
         pd.show();
     }
 }

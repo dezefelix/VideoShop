@@ -58,7 +58,7 @@ public class FilmOverviewActivity extends AppCompatActivity implements ListView.
 
         //initialise views
         ListView filmListview = (ListView) findViewById(R.id.listview);
-        TextView logOutBtn = (TextView) findViewById(R.id.login_button);
+        TextView logOutBtn = (TextView) findViewById(R.id.logout_button);
 
         //get customer from intent
         c = (Customer) getIntent().getSerializableExtra("customer");
@@ -104,19 +104,6 @@ public class FilmOverviewActivity extends AppCompatActivity implements ListView.
                 this
         );
         queue.add(req);
-    }
-
-    //create JSON body
-    public JSONObject createBody() throws JSONException {
-
-        //get token from SharedPreference
-        SharedPreferences tokenPref = getSharedPreferences(TOKENPREFERENCE, Context.MODE_PRIVATE);
-        String token = tokenPref.getString("token", "");
-
-        //create payload
-        JSONObject payload = new JSONObject();
-        payload.put("Auth", token);
-        return payload;
     }
 
     public void sendGetCopyRequest(final Film film) throws JSONException {
