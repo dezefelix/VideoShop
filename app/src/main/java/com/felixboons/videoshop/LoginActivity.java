@@ -62,12 +62,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             emailInput.setText(getIntent().getStringExtra("email"));
             passwordInput.setText(getIntent().getStringExtra("password"));
         }
-
-        //FOR TEST PURPOSES -----
-        emailInput.setText("felixboons@hotmail.com");
-        passwordInput.setText("felixboons");
-        //-----------------------
-
     }
 
     @Override
