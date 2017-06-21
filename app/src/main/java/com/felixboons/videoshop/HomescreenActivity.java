@@ -20,7 +20,7 @@ public class HomescreenActivity extends AppCompatActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_homescreen);
 
-        //initialise
+        //initialise toolbar
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         myToolbar.setTitle("Home");
         setSupportActionBar(myToolbar);

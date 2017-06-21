@@ -146,6 +146,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onErrorResponse(VolleyError error) {
+        pd.cancel();
         Toast.makeText(this, "Could not create account.", Toast.LENGTH_SHORT).show();
     }
 

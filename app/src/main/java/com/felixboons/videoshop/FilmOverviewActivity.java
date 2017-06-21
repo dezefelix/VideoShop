@@ -63,8 +63,6 @@ public class FilmOverviewActivity extends AppCompatActivity implements ListView.
         //get customer from intent
         c = (Customer) getIntent().getSerializableExtra("customer");
 
-        films = new ArrayList<>();
-
         //initialise queue
         queue = MyVolleyRequestQueue.getInstance(this.getApplicationContext()).getRequestQueue();
 
